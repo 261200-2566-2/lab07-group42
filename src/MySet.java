@@ -10,187 +10,211 @@ import java.util.Iterator;
 
 public class MySet<type> implements Set<type>
 {
-    private int current_key = 0;
-    MyHeap temp_key = new MyHeap();
-    private HashMap<Integer, type> inventory = new HashMap<Integer, type>();
+    // private:
+        private int current_key = 0;
+        MyHeap temp_key = new MyHeap();
+        private HashMap<Integer, type> inventory = new HashMap<Integer, type>();
 
-    private class use_for_each implements Iterator<type>
-    {
-        //private:
-            private int current = 0;
-            private type data;
+        private class use_for_each implements Iterator<type>
+        {
+            //private:
+                private int current = 0;
+                private type data;
 
-            private type until_not_null()
-            {
-                if(data == null)
+                private type until_not_null()
                 {
-                    type for_return;
-                    while(current < current_key)
+                    if(data == null)
                     {
-                        for_return = inventory.get(current);
+                        type for_return;
+                        while(current < current_key)
+                        {
+                            for_return = inventory.get(current);
 
-                        if(for_return != null) return for_return;
-                        current++;
-                    } 
+                            if(for_return != null) return for_return;
+                            current++;
+                        } 
 
-                    return null;
+                        return null;
+                    }
+                    else return data;
                 }
-                else return data;
-            }
 
-        //public:
-            use_for_each()
-            {
-                data = inventory.get(current);
-
-                data = until_not_null();
-            }
-
-            @Override
-            public boolean hasNext() 
-            {
-                return data != null;
-            }
-
-            @Override
-            public type next() 
-            {
-                if(!hasNext()) throw new NoSuchElementException();
-
-                type for_return = data;
-                data = inventory.get(++current);
-                data = until_not_null();
-                return for_return;
-            }
-    }
-
-    @Override
-    public int size()
-    {
-        return inventory.size();
-    }
-
-    @Override
-    public boolean isEmpty()
-    {
-        return inventory.isEmpty();
-    }
-
-    @Override
-    public boolean contains(Object o)
-    {
-        return inventory.containsValue(o);
-    }
-
-    @Override
-    public Iterator iterator() 
-    {
-        return new use_for_each();
-    }
-
-    @Override
-    public boolean add(type input) 
-    {
-        if(temp_key.empty()) inventory.put(current_key++, input);
-        else inventory.put(temp_key.pop(), input);
-
-        return true;
-    }
-
-    @Override
-    public boolean remove(Object o) 
-    {
-        int key = -1;
-        if(inventory.containsValue(o))
-        {
-            for(Entry<Integer, type> find: inventory.entrySet())
-            {
-                if(find.getValue().equals(o))
+            //public:
+                use_for_each()
                 {
-                    key = find.getKey();
-                    break;
+                    data = inventory.get(current);
+
+                    data = until_not_null();
                 }
+
+                @Override
+                public boolean hasNext() 
+                {
+                    return data != null;
+                }
+
+                @Override
+                public type next() 
+                {
+                    if(!hasNext()) throw new NoSuchElementException();
+
+                    type for_return = data;
+                    data = inventory.get(++current);
+                    data = until_not_null();
+                    return for_return;
+                }
+        }
+
+    //public:
+        @Override
+        public int size()
+        {
+            return inventory.size();
+        }
+
+        @Override
+        public boolean isEmpty()
+        {
+            return inventory.isEmpty();
+        }
+
+        @Override
+        public boolean contains(Object o)
+        {
+            return inventory.containsValue(o);
+        }
+
+        @Override
+        public Iterator iterator() 
+        {
+            return new use_for_each();
+        }
+
+        @Override
+        public boolean add(type input) 
+        {
+            if(temp_key.empty()) inventory.put(current_key++, input);
+            else inventory.put(temp_key.pop(), input);
+
+            return true;
+        }
+
+        @Override
+        public boolean remove(Object o) 
+        {
+            int key = -1;
+            if(inventory.containsValue(o))
+            {
+                for(Entry<Integer, type> find: inventory.entrySet())
+                {
+                    if(find.getValue().equals(o))
+                    {
+                        key = find.getKey();
+                        break;
+                    }
+                }
+
+                inventory.remove(key);
+
+                temp_key.add(key);
+
+                return true;
+            }
+            else return false;
+        }
+
+        @Override
+        public boolean addAll(Collection c) 
+        {
+            try 
+            {
+                for(Object i: c) add((type) i);
+                return true;
+            } 
+            catch (Exception e) 
+            {
+                return false;
+            }
+        }
+
+        @Override
+        public void clear() 
+        {
+            inventory.clear();
+        }
+
+        @Override
+        public boolean removeAll(Collection c) 
+        {
+            for(Object i: c)
+            {
+                if(inventory.containsValue(i)) remove(i);
             }
 
-            inventory.remove(key);
-
-            temp_key.add(key);
-
             return true;
         }
-        else return false;
-    }
 
-    @Override
-    public boolean addAll(Collection c) 
-    {
-        try 
+        @Override
+        public boolean retainAll(Collection c) 
         {
-            for(Object i: c) add((type) i);
+            for(Object i: this)
+            {
+                if(!c.contains(i))
+                {
+                    this.remove(i);
+                }
+            }
             return true;
-        } 
-        catch (Exception e) 
-        {
-            return false;
-        }
-    }
-
-    @Override
-    public void clear() 
-    {
-        inventory.clear();
-    }
-
-    @Override
-    public boolean removeAll(Collection c) 
-    {
-        for(Object i: c)
-        {
-            if(inventory.containsValue(i)) remove(i);
         }
 
-        return true;
-    }
-
-    @Override
-    public boolean retainAll(Collection c) {
-        return false;
-    }
-
-    @Override
-    public boolean containsAll(Collection c)
-    {
-        boolean for_return = true;
-
-        for(Object i: c)
+        @Override
+        public boolean containsAll(Collection c)
         {
-            for_return = (for_return && inventory.containsValue(i));
+            boolean for_return = true;
 
-            if(!for_return) break;
+            for(Object i: c)
+            {
+                for_return = (for_return && inventory.containsValue(i));
+
+                if(!for_return) break;
+            }
+
+            return for_return;
         }
 
-        return for_return;
-    }
+        @Override
+        public Object[] toArray(Object[] a) 
+        {
+            System.out.println("\nERROR: I can do this\n");
+            return null;
+        }
 
-    @Override
-    public Object[] toArray(Object[] a) {
-        return new Object[0];
-    }
+        @Override
+        public Object[] toArray() 
+        {
+            int size = inventory.size();
+            Object[] for_return = new Object[size];
+            
+            int i = 0;
 
-    @Override
-    public Object[] toArray() {
-        return new Object[0];
-    }
+            for(type item: this)
+            {
+                for_return[i] = item;
+                i++;
+            }
 
-    @Override
-    public String toString() 
-    {
-        String for_return = "";
+            return for_return;
+        }
 
-        for_return += ("value = " + inventory.get(0));
-        for_return += ("value = " + inventory.get(1));
-        for_return += ("value = " + inventory.get(2));
+        @Override
+        public String toString() 
+        {
+            String for_return = "";
 
-        return for_return;
-    }
+            for_return += ("value = " + inventory.get(0));
+            for_return += ("value = " + inventory.get(1));
+            for_return += ("value = " + inventory.get(2));
+
+            return for_return;
+        }
 }

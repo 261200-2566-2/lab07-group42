@@ -2,7 +2,6 @@ import java.util.HashMap;
 import java.util.Set;
 
 import java.util.Map.Entry;
-import java.util.NoSuchElementException;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -56,7 +55,7 @@ public class MySet<type> implements Set<type>
                 @Override
                 public type next() 
                 {
-                    if(!hasNext()) throw new NoSuchElementException();
+                    if(!hasNext()) return null;
 
                     type for_return = data;
                     data = inventory.get(++current);

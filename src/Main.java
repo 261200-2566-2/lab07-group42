@@ -128,9 +128,9 @@ public class Main
         System.out.println("Collction");
         for(int i: inventory) System.out.print(i+" ");
         System.out.println();
+        System.out.println("Myset");
         for(int i: set) System.out.print(i+" ");
         System.out.println();
-        System.out.println("Myset");
         System.out.println("contain all = "+set.containsAll(inventory));
     }
 
@@ -189,6 +189,8 @@ public class Main
             else System.out.println("Try again!!");
         }
         
+        //remove comment when want to test
+
         //test 
         Main test = new Main();
 

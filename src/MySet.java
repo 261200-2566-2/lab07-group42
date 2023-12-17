@@ -1,11 +1,18 @@
 import java.util.HashMap;
 import java.util.Set;
+
+import java.util.Map.Entry;
+
 import java.util.Collection;
 import java.util.Iterator;
 
+@SuppressWarnings("unchecked")
+
 public class MySet<type> implements Set<type>
 {
-    private HashMap<type, Integer> inventory = new HashMap<type, Integer>();
+    private int current_key = 0;
+    private HashMap<Integer, type> inventory = new HashMap<Integer, type>();
+
     @Override
     public int size()
     {
@@ -35,18 +42,30 @@ public class MySet<type> implements Set<type>
     }
 
     @Override
-    public boolean add(Object o) {
+    public boolean add(type input) 
+    {
+        inventory.put(current_key++, input);
+        return true;
+    }
+
+    @Override
+    public boolean remove(Object o) 
+    {
         return false;
     }
 
     @Override
-    public boolean remove(Object o) {
-        return false;
-    }
-
-    @Override
-    public boolean addAll(Collection c) {
-        return false;
+    public boolean addAll(Collection c) 
+    {
+        try 
+        {
+            for(Object i: c) add((type) i);
+            return true;
+        } 
+        catch (Exception e) 
+        {
+            return false;
+        }
     }
 
     @Override
@@ -82,5 +101,17 @@ public class MySet<type> implements Set<type>
     @Override
     public Object[] toArray(Object[] a) {
         return new Object[0];
+    }
+
+    @Override
+    public String toString() 
+    {
+        String for_return = "";
+
+        for_return += ("value = " + inventory.get(0));
+        for_return += ("value = " + inventory.get(1));
+        for_return += ("value = " + inventory.get(2));
+
+        return for_return;
     }
 }

@@ -12,7 +12,7 @@ public class MySet<type> implements Set<type>
 {
     // private:
         private int current_key = 0;
-        MyHeap temp_key = new MyHeap();
+        private MyHeap temp_key = new MyHeap();
         private HashMap<Integer, type> inventory = new HashMap<Integer, type>();
 
         private class use_for_each implements Iterator<type>
@@ -93,10 +93,17 @@ public class MySet<type> implements Set<type>
         @Override
         public boolean add(type input) 
         {
-            if(temp_key.empty()) inventory.put(current_key++, input);
-            else inventory.put(temp_key.pop(), input);
+            if(inventory.containsValue(input))
+            {
+                return false;
+            }
+            else
+            {
+                if(temp_key.empty()) inventory.put(current_key++, input);
+                else inventory.put(temp_key.pop(), input);
 
-            return true;
+                return true;
+            }
         }
 
         @Override
@@ -209,12 +216,7 @@ public class MySet<type> implements Set<type>
         @Override
         public String toString() 
         {
-            String for_return = "";
-
-            for_return += ("value = " + inventory.get(0));
-            for_return += ("value = " + inventory.get(1));
-            for_return += ("value = " + inventory.get(2));
-
+            String for_return = "Please, don't do this.";
             return for_return;
         }
 }

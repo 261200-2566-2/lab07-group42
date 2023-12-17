@@ -2,7 +2,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import java.util.Map.Entry;
-
+import java.util.NoSuchElementException;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -11,7 +11,58 @@ import java.util.Iterator;
 public class MySet<type> implements Set<type>
 {
     private int current_key = 0;
+    MyHeap temp_key = new MyHeap();
     private HashMap<Integer, type> inventory = new HashMap<Integer, type>();
+
+    private class use_for_each implements Iterator<type>
+    {
+        //private:
+            private int current = 0;
+            private type data;
+
+            private type until_not_null()
+            {
+                if(data == null)
+                {
+                    type for_return;
+                    while(current < current_key)
+                    {
+                        for_return = inventory.get(current);
+
+                        if(for_return != null) return for_return;
+                        current++;
+                    } 
+
+                    return null;
+                }
+                else return data;
+            }
+
+        //public:
+            use_for_each()
+            {
+                data = inventory.get(current);
+
+                data = until_not_null();
+            }
+
+            @Override
+            public boolean hasNext() 
+            {
+                return data != null;
+            }
+
+            @Override
+            public type next() 
+            {
+                if(!hasNext()) throw new NoSuchElementException();
+
+                type for_return = data;
+                data = inventory.get(++current);
+                data = until_not_null();
+                return for_return;
+            }
+    }
 
     @Override
     public int size()
@@ -32,26 +83,42 @@ public class MySet<type> implements Set<type>
     }
 
     @Override
-    public Iterator iterator() {
-        return null;
-    }
-
-    @Override
-    public Object[] toArray() {
-        return new Object[0];
+    public Iterator iterator() 
+    {
+        return new use_for_each();
     }
 
     @Override
     public boolean add(type input) 
     {
-        inventory.put(current_key++, input);
+        if(temp_key.empty()) inventory.put(current_key++, input);
+        else inventory.put(temp_key.pop(), input);
+
         return true;
     }
 
     @Override
     public boolean remove(Object o) 
     {
-        return false;
+        int key = -1;
+        if(inventory.containsValue(o))
+        {
+            for(Entry<Integer, type> find: inventory.entrySet())
+            {
+                if(find.getValue().equals(o))
+                {
+                    key = find.getKey();
+                    break;
+                }
+            }
+
+            inventory.remove(key);
+
+            temp_key.add(key);
+
+            return true;
+        }
+        else return false;
     }
 
     @Override
@@ -69,13 +136,20 @@ public class MySet<type> implements Set<type>
     }
 
     @Override
-    public void clear() {
-
+    public void clear() 
+    {
+        inventory.clear();
     }
 
     @Override
-    public boolean removeAll(Collection c) {
-        return false;
+    public boolean removeAll(Collection c) 
+    {
+        for(Object i: c)
+        {
+            if(inventory.containsValue(i)) remove(i);
+        }
+
+        return true;
     }
 
     @Override
@@ -100,6 +174,11 @@ public class MySet<type> implements Set<type>
 
     @Override
     public Object[] toArray(Object[] a) {
+        return new Object[0];
+    }
+
+    @Override
+    public Object[] toArray() {
         return new Object[0];
     }
 

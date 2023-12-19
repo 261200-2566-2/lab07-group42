@@ -132,10 +132,12 @@ public class MySet<type> implements Set<type>
         @Override
         public boolean addAll(Collection c) 
         {
+            boolean for_return = false;
+
             try 
             {
-                for(Object i: c) add((type) i);
-                return true;
+                for(Object i: c) for_return = for_return || add((type) i);
+                return for_return;
             } 
             catch (Exception e) 
             {
@@ -152,12 +154,17 @@ public class MySet<type> implements Set<type>
         @Override
         public boolean removeAll(Collection c) 
         {
+            boolean for_return = false;
             for(Object i: c)
             {
-                if(inventory.containsValue(i)) remove(i);
+                if(inventory.containsValue(i))
+                {
+                    for_return = true;
+                    remove(i);
+                }
             }
 
-            return true;
+            return for_return;
         }
 
         @Override

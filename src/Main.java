@@ -152,18 +152,18 @@ public class Main
         for(int i: collect) System.out.print(i + " ");
         System.out.println();
 
-        System.out.println("Add all");
-        set.addAll(collect);
+        System.out.printf("Add all (status = %b)\n",set.addAll(collect));
+        // set.addAll(collect);
         for(int i: set) System.out.print(i + " ");
         System.out.println();
 
-        System.out.println("retain all");
-        set.retainAll(collect);
+        System.out.printf("retain all (status = %b)\n",set.retainAll(collect));
+        // set.retainAll(collect);
         for(int i: set) System.out.print(i + " ");
         System.out.println();
 
-        System.out.println("remove all");
-        set.removeAll(collect);
+        System.out.printf("remove all (status = %b)\n",set.removeAll(collect));
+        // set.removeAll(collect);
         for(int i: set) System.out.print(i + " ");
         System.out.println();
     }
@@ -207,6 +207,6 @@ public class Main
         // test.test_contain_all(num);
 
         // test 4
-        // test.three_Function_with_all(num);
+        test.three_Function_with_all(num);
     }
 }

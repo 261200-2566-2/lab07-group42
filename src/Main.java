@@ -142,7 +142,14 @@ public class Main
     public void three_Function_with_all(int num)
     {
         MySet<Integer> set = create_set(num);
+
+        //case random
         Collection<Integer> collect = create_collection(num/4);
+        collect.addAll(set);
+
+        //case same set
+        // Collection<Integer> collect = new LinkedList<>();// = create_collection(num/4);
+        // collect.addAll(set);
 
         System.out.println("Set");
         for(int i: set) System.out.print(i + " ");
@@ -152,18 +159,18 @@ public class Main
         for(int i: collect) System.out.print(i + " ");
         System.out.println();
 
-        System.out.println("Add all");
-        set.addAll(collect);
+        System.out.printf("Add all (status = %b)\n",set.addAll(collect));
+        // set.addAll(collect);
         for(int i: set) System.out.print(i + " ");
         System.out.println();
 
-        System.out.println("retain all");
-        set.retainAll(collect);
+        System.out.printf("retain all (status = %b)\n",set.retainAll(collect));
+        // set.retainAll(collect);
         for(int i: set) System.out.print(i + " ");
         System.out.println();
 
-        System.out.println("remove all");
-        set.removeAll(collect);
+        System.out.printf("remove all (status = %b)\n",set.removeAll(collect));
+        // set.removeAll(collect);
         for(int i: set) System.out.print(i + " ");
         System.out.println();
     }

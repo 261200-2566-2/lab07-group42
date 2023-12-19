@@ -154,30 +154,33 @@ public class MySet<type> implements Set<type>
         @Override
         public boolean removeAll(Collection c) 
         {
-            boolean for_return = false;
-            for(Object i: c)
-            {
-                if(inventory.containsValue(i))
-                {
-                    for_return = true;
-                    remove(i);
-                }
-            }
+            // boolean for_return = false;
+            // for(Object i: c)
+            // {
+            //     if(inventory.containsValue(i))
+            //     {
+            //         for_return = true;
+            //         remove(i);
+            //     }
+            // }
 
-            return for_return;
+            // return for_return;
+
+            return inventory.keySet().removeAll(c);
         }
 
         @Override
         public boolean retainAll(Collection c) 
         {
-            for(Object i: this)
-            {
-                if(!c.contains(i))
-                {
-                    this.remove(i);
-                }
-            }
-            return true;
+            // for(Object i: this)
+            // {
+            //     if(!c.contains(i))
+            //     {
+            //         this.remove(i);
+            //     }
+            // }
+            // return true;
+            return inventory.keySet().retainAll(c);
         }
 
         @Override

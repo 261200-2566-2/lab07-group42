@@ -142,7 +142,14 @@ public class Main
     public void three_Function_with_all(int num)
     {
         MySet<Integer> set = create_set(num);
+
+        //case random
         Collection<Integer> collect = create_collection(num/4);
+        collect.addAll(set);
+
+        //case same set
+        // Collection<Integer> collect = new LinkedList<>();// = create_collection(num/4);
+        // collect.addAll(set);
 
         System.out.println("Set");
         for(int i: set) System.out.print(i + " ");
@@ -207,6 +214,6 @@ public class Main
         // test.test_contain_all(num);
 
         // test 4
-        test.three_Function_with_all(num);
+        // test.three_Function_with_all(num);
     }
 }
